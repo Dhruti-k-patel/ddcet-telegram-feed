@@ -1,0 +1,11 @@
+# Never commit secrets
+.env
+*.env
+# run_local.bat holds your real bot token on your PC — never upload it.
+run_local.bat
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
