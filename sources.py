@@ -25,6 +25,7 @@ from config import (
     DOCUMENT_HOST_HINTS,
     HTTP_HEADERS,
     NAV_HREF_HINTS,
+    ONLY_SOURCES,
     REQUEST_TIMEOUT,
     SOURCES,
 )
@@ -172,7 +173,8 @@ def scrape_source(source_key):
 
 def scrape_all():
     results = []
-    for key in SOURCES:
+    keys = [k for k in SOURCES if not ONLY_SOURCES or k.upper() in ONLY_SOURCES]
+    for key in keys:
         print(f"[{key}]")
         try:
             results.extend(scrape_source(key))

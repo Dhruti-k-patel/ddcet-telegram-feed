@@ -1,8 +1,12 @@
 # Never commit secrets
 .env
 *.env
-# run_local.bat holds your real bot token on your PC — never upload it.
+# These .bat files hold your real bot token on your PC — never upload them.
 run_local.bat
+run_gtu.bat
+
+# PC-local GTU tracking state (managed by the Task Scheduler run, not the cloud).
+seen_gtu.json
 
 # Python
 __pycache__/

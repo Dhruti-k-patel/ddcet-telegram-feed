@@ -99,12 +99,26 @@ ENGINEERING_TERMS = ["engineering", "b.e.", "b.tech", "b tech"]
 # ---------------------------------------------------------------------------
 # Behaviour
 # ---------------------------------------------------------------------------
-# Sources listed here only post items containing a STRONG DDCET term. GTU's
-# notice stream is full of unrelated results/circulars, so we keep it silent
-# unless it publishes something genuinely DDCET-related.
-STRICT_SOURCES = {"GTU"}
+# ---------------------------------------------------------------------------
+# GTU: Diploma in Engineering Sem 5 & 6 notices (results, recheck, timetables).
+# GTU is IP-blocked from cloud servers, so this only runs from the user's PC.
+# A notice is kept if it mentions diploma engineering AND semester 5 or 6.
+# ---------------------------------------------------------------------------
+GTU_COURSE_TERMS = ["diploma in engineering", "diploma engineering"]
+# Matches "Sem-5", "Sem 6", "Semester-5", "Semester 6", "Sem-05", etc.
+GTU_SEM_PATTERN = r"sem(?:ester)?[-\s]?0?[56]\b"
 
-SEEN_FILE = "seen.json"            # remembers already-posted notices
+# Restrict which sources are scraped this run (env var, comma-separated).
+# e.g. ONLY_SOURCES=GTU (PC run) or ONLY_SOURCES=ACPC (cloud run). Empty = all.
+ONLY_SOURCES = [
+    s.strip().upper()
+    for s in os.environ.get("ONLY_SOURCES", "").split(",")
+    if s.strip()
+]
+
+# State file is env-overridable so the PC GTU run keeps its own tracking file
+# (seen_gtu.json) separate from the cloud ACPC run (seen.json).
+SEEN_FILE = os.environ.get("SEEN_FILE", "seen.json")
 MAX_POSTS_PER_RUN = 8              # safety cap so a first run doesn't flood
 REQUEST_TIMEOUT = 30              # seconds
 DRY_RUN = os.environ.get("DRY_RUN", "").lower() in ("1", "true", "yes")

@@ -24,8 +24,8 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
-from config import DRY_RUN, MAX_POSTS_PER_RUN, SEEN_FILE, STRICT_SOURCES
-from filter import is_relevant, summarise
+from config import DRY_RUN, MAX_POSTS_PER_RUN, SEEN_FILE
+from filter import keep_item, summarise
 from poster import post_items
 from sources import scrape_all
 
@@ -53,11 +53,7 @@ def main():
     scraped = scrape_all()
     print(f"\nTotal candidates: {len(scraped)}")
 
-    relevant = [
-        it
-        for it in scraped
-        if is_relevant(it["title"], strict=it["source"] in STRICT_SOURCES)
-    ]
+    relevant = [it for it in scraped if keep_item(it)]
     print(f"Relevant to DDCET: {len(relevant)}")
 
     fresh = [it for it in relevant if it["uid"] not in seen]

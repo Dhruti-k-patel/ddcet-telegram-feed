@@ -7,10 +7,14 @@ from config import (
     ENGINEERING_ONLY,
     ENGINEERING_TERMS,
     EXCLUDE_KEYWORDS,
+    GTU_COURSE_TERMS,
+    GTU_SEM_PATTERN,
     INCLUDE_KEYWORDS,
     PHARMACY_TERMS,
     STRONG_KEYWORDS,
 )
+
+_GTU_SEM_RE = re.compile(GTU_SEM_PATTERN, re.IGNORECASE)
 
 
 def is_relevant(title, strict=False):
@@ -43,6 +47,21 @@ def is_relevant(title, strict=False):
     # Included but also matches an exclude term (and no strong term) -> drop.
     has_exclude = any(k in text for k in EXCLUDE_KEYWORDS)
     return not has_exclude
+
+
+def is_relevant_gtu(title):
+    """GTU: keep only Diploma in Engineering Sem 5 / Sem 6 notices."""
+    text = title.lower()
+    if not any(term in text for term in GTU_COURSE_TERMS):
+        return False
+    return bool(_GTU_SEM_RE.search(text))
+
+
+def keep_item(item):
+    """Per-source relevance dispatch used by main.py."""
+    if item["source"] == "GTU":
+        return is_relevant_gtu(item["title"])
+    return is_relevant(item["title"])
 
 
 # ---------------------------------------------------------------------------

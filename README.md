@@ -109,6 +109,23 @@ Use this if GitHub can't reach the sites. Your PC in India can.
 
 ---
 
+## GTU Diploma Sem 5 & 6 feed (runs on your PC)
+
+GTU blocks cloud servers (the `403` in the Actions log), so the GTU feed **cannot**
+run on GitHub — it runs on your PC via `run_gtu.bat` + Windows Task Scheduler. It only
+posts **Diploma in Engineering Sem 5 & 6** notices, and it keeps its own tracking file
+(`seen_gtu.json`) so it never clashes with the cloud ACPC feed.
+
+**Set it up:**
+1. Edit `run_gtu.bat` → paste your real bot token into the `TELEGRAM_BOT_TOKEN=` line.
+2. Test it: set `DRY_RUN=1` in the file, double-click, confirm it lists Sem 5/6 notices.
+   Then set `DRY_RUN=0` and double-click again to post for real.
+3. Automate it: **Task Scheduler → Create Basic Task** → Trigger *Daily* → Action
+   *Start a program* → browse to `run_gtu.bat`. (Tick "Run whether user is logged on or
+   not" to run it in the background.)
+
+It runs only when your PC is on — fine for results notices, which stay relevant for days.
+
 ## Tuning
 
 - **What counts as relevant** → edit `INCLUDE_KEYWORDS` / `EXCLUDE_KEYWORDS` in `config.py`.

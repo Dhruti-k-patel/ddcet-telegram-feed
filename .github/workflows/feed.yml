@@ -36,6 +36,9 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # GTU is IP-blocked from cloud servers, so the cloud only does ACPC.
+          # The GTU feed runs on the user's PC via run_gtu.bat + Task Scheduler.
+          ONLY_SOURCES: ACPC
         run: python main.py
 
       - name: Commit updated state
